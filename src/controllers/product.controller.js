@@ -1,10 +1,13 @@
 // *** Contrôleur de notre application ***
 // Ensemble des fonctions permettant de gérer la logique du traitement des données
 
+// Ajout du modèle d'un produit
+const Product = require("../models/products");
+
 // * Création d'un produit *
 async function createProduct(req, res) {
     try {
-        res.send("Création d\'un produit");
+        res.send("Création d'un produit");
     } catch (error) {
         console.error(error);
     }
