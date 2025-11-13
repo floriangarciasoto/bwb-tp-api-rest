@@ -10,6 +10,9 @@ const productSchema = new mongoose.Schema({
     createdAt: { type: Date, default: new Date() }
 });
 
-// On exporte le modèle de notre produit pour qu'il soit utilisable dans le contrôleur
-// lors des opérations avec la base de données
+// On exporte le modèle de notre produit pour qu'il soit utilisable
+// dans le contrôleur lors des opérations avec la base de données.
+// En choisissant de mettre "Product", mongoose va automatiquement
+// connecter notre schéma à la collection store.products,
+// en déduisant son nom en y ajoutant le "s".
 module.exports = mongoose.model("Product", productSchema);
