@@ -9,6 +9,15 @@ const ROUTES = {
     PRODUCTS: "/products"
 };
 
+// Appel de notre contrôleur
+const {
+    createProduct,
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct
+} = require('../controllers/product.controller');
+
 // ** Création de la logique de l'application **
 
 // Ici Express nous permet d'utiliser ses méthodes prédéfinies,
@@ -26,45 +35,35 @@ const ROUTES = {
 // sous la forme : products/:id => ":id" est la partie dynamique de l'URL,
 // Express va donc pouvoir nous délivrer l'ID via req.params.id
 
-// * Affichage des produits *
-// URL : /products
-// Méthode GET -> l'utilisateur demande seulement la liste des produits
-// => C'est la méthode utilisée pour l'affichage de données
-router.get(ROUTES.PRODUCTS, (req, res) => {
-    res.send("Liste de tous les produits");
-});
-
 // * Ajout d'un produit *
 // URL : /products
 // Méthode POST -> l'utilisateur va envoyer des données pour ajouter un produit
 // => C'est la méthode utilisée pour la création de données
-router.post(ROUTES.PRODUCTS, (req, res) => {
-    res.send("Création d\'un produit");
-});
+router.post(ROUTES.PRODUCTS, createProduct);
+
+// * Affichage des produits *
+// URL : /products
+// Méthode GET -> l'utilisateur demande seulement la liste des produits
+// => C'est la méthode utilisée pour l'affichage de données
+router.get(ROUTES.PRODUCTS, getAllProducts);
 
 // * Affichage d'un produit en particulier *
 // URL : /products/:id
 // Méthode GET : pareil que l'affichage de la liste des produits,
 // l'utilisateur ne demande que l'affichage d'informations, ici les détails d'un produit
-router.get(`${ROUTES.PRODUCTS}/:id`, (req, res) => {
-    res.send(`Récupération du produit ${req.params.id}`);
-});
+router.get(`${ROUTES.PRODUCTS}/:id`, getProductById);
 
 // * Modification d'un produit en particulier *
 // URL : /products/:id
 // Méthode PUT : l'utilisateur va vouloir modifier les informations d'un produit en particulier
 // => C'est la méthode utilisée pour la modification de données précises
-router.put(`${ROUTES.PRODUCTS}/:id`, (req, res) => {
-    res.send(`Modification du produit ${req.params.id}`);
-});
+router.put(`${ROUTES.PRODUCTS}/:id`, updateProduct);
 
 // * Suppression d'un produit en particulier *
 // URL : /products/:id
-// Méthode DELETE : l'utilisateur va vouloir supprimer produit en particulier
+// Méthode DELETE : l'utilisateur va vouloir supprimer un produit en particulier
 // => C'est la méthode utilisée pour la suppression de données précises
-router.delete(`${ROUTES.PRODUCTS}/:id`, (req, res) => {
-    res.send(`Suppression du produit ${req.params.id}`);
-});
+router.delete(`${ROUTES.PRODUCTS}/:id`, deleteProduct);
 
 // On exporte notre router Express (variable router)
 module.exports = router;
