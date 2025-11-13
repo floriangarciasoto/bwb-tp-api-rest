@@ -1,0 +1,28 @@
+{
+  "name": "bwb-tp-api-rest",
+  "version": "1.0.0",
+  "description": "TP API REST Node.js + Express + MongoDB",
+  "homepage": "https://github.com/floriangarciasoto/bwb-tp-api-rest#readme",
+  "bugs": {
+    "url": "https://github.com/floriangarciasoto/bwb-tp-api-rest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/floriangarciasoto/bwb-tp-api-rest.git"
+  },
+  "license": "ISC",
+  "author": "FGS",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
