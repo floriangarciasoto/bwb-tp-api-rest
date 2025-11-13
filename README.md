@@ -46,3 +46,25 @@ store> db.products.insertOne({
   insertedId: ObjectId('6915f2ef70b63b52c063b113')
 }
 ```
+
+## Test du serveur
+
+Création d'un produit :
+
+![ServerTestCreate](medias/server-test-create.jpg)
+
+Affichage de tous les produits :
+
+![ServerTestList](medias/server-test-list.jpg)
+
+Affichage d'un produit en particulier :
+
+![ServerTestDetails](medias/server-test-details.jpg)
+
+Mise à jour d'un produit :
+
+![ServerTestUpdate](medias/server-test-update.jpg)
+
+Suppression d'un produit :
+
+![ServerTestDelete](medias/server-test-delete.jpg)
