@@ -1,12 +1,12 @@
 // Ajout d'Express (Express n'est pas déclaré globalement dans l'application,
 // il faut l'ajouter pour chaque fichier JS qui en a besoin)
-const express = require("express");
+const express = require('express');
 // AJout d'un routeur Express, nécessaire pour faire nos routes en utilisant les fonctionnalités d'Express
 const router = express.Router();
 
 // Déclaration de nos routes (une seule dans le cas présent puisque l'application marche sur une seule URL)
 const ROUTES = {
-    PRODUCTS: "/products"
+    PRODUCTS: '/products'
 };
 
 // Appel de notre contrôleur

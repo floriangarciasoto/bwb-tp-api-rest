@@ -2,7 +2,7 @@
 // Ensemble des fonctions permettant de gérer la logique du traitement des données
 
 // Ajout du modèle d'un produit
-const Product = require("../models/products");
+const Product = require('../models/products');
 
 // * Création d'un produit *
 async function createProduct(req, res) {
@@ -53,7 +53,7 @@ async function getProductById(req, res) {
         if (!product) {
             // Dans le cas écheant, cela veut dire que l'on a pas trouvé
             // le produit, on renvoit donc la fameuse erreur 404
-            return res.status(404).json({ error: `Le produit avec l'ID ${id} introuvable` });
+            return res.status(404).json({ error: `Le produit avec l'ID ${id} est introuvable` });
         }
 
         // Si un produit a été trouvé, on peut renvoyer alors directement sa valeur JSON.
@@ -91,7 +91,7 @@ async function updateProduct(req, res) {
         // Si la mise à jour du produit a échouée
         if (!updatedProduct) {
             // C'est que l'ID du produit est introuvable en base de données -> erreur 404
-            return res.status(404).json({ error: `Le produit avec l'ID ${id} introuvable` });
+            return res.status(404).json({ error: `Le produit avec l'ID ${id} est introuvable` });
         }
 
         // Après la mise a jour, on renvoit le JSON du produit lui même, comme on l'avait prévu
@@ -117,7 +117,7 @@ async function deleteProduct(req, res) {
         // Si le produit à supprimer n'a pas été trouvé
         if (!deletedProduct) {
             // On renvoit à l'utilisateur que le produit à supprimer est introuvable -> erreur 404
-            return res.status(404).json({ error: `Le produit avec l'ID ${id} introuvable` });
+            return res.status(404).json({ error: `Le produit avec l'ID ${id} est introuvable` });
         }
 
         // Ici on ne renvoit pas le JSON du produit que l'on a supprimé, car ce n'est pas son contenu

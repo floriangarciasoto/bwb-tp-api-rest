@@ -1,10 +1,10 @@
 // Ajout des modules nodes necéssaires
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
 // Ajout des variables de l'environement local pour obtenir notre port d'écoute
-require("dotenv").config();
+require('dotenv').config();
 
 // Instanciation de l'application
 const app = new express();
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 
 // Ajout des routes
-const router = require("./routes/product.routes");
+const router = require('./routes/product.routes');
 // Ajout du port d'écoute à notre application depuis l'env
 const PORT = process.env.PORT;
 
@@ -24,8 +24,8 @@ const PORT = process.env.PORT;
 // C'est une connexion à un serveur, donc un processus qui peut prendre du temps -> la fonction est asynchrone
 async function connectDB() {
     try {
-        // Connexion à la base de données "store" dans MongoDB
-        await mongoose.connect("mongodb://127.0.0.1:27017/store");
+        // Connexion à la base de données 'store' dans MongoDB
+        await mongoose.connect('mongodb://localhost:27017/store');
 
         console.log("MongoDB connecté");
     } catch (error) {
@@ -39,7 +39,7 @@ async function connectDB() {
 connectDB();
 
 // Montage du routeur sur notre application
-app.use("/", router);
+app.use('/', router);
 // Ouverture du port d'écoute de notre application
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur http://localhost:${PORT}`);
