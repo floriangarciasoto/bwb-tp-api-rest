@@ -81,11 +81,17 @@ async function updateProduct(req, res) {
             id, // l'ID de l'entrée à modifier
             req.body, // la valeur JSON contenant les paramètres à remplacer dans l'entrée
     
-            // Et un paramètre optionnel représentant les options.
-            // En précisant new à true, on va demander à la fonction de nous
-            // retourner le JSON que l'utilisateur a envoyé,
-            // et qui a remplacé l'entrée en base de données.
-            { new: true }
+            // Objet optionnel représentant les options.
+            {
+                // En précisant new à true, on va demander à la fonction de nous
+                // retourner le JSON que l'utilisateur a envoyé,
+                // et qui a remplacé l'entrée en base de données.
+                new: true,
+
+                // Permet de vérifier les données utilisateur, aussi pour l'opération d'update,
+                // par défaut mongoose ne le fait pas.
+                runValidators: true
+            }
         );
 
         // Si la mise à jour du produit a échouée
