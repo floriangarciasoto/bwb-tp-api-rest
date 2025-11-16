@@ -15,6 +15,12 @@ npm install express cors mongoose dotenv
 npm install nodemon --save-dev
 ```
 
+Ajout des packages pour le système de logs :
+
+```
+npm install morgan rotating-file-stream
+```
+
 ### MongoDB
 
 Création de la base de données :

@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+
 // Ajout des variables de l'environement local pour obtenir notre port d'écoute
 require('dotenv').config();
 
@@ -20,7 +21,60 @@ const router = require('./routes/product.routes');
 // Ajout du port d'écoute à notre application depuis l'env
 const PORT = process.env.PORT;
 
+
+// ** Système de logs **
+
+// Ajout de Morgan, permettant de loger l'activité HTTP du serveur
+const morgan = require('morgan');
+// Ajout de RFS pour un système de logs sur fichiers logs access et error
+// Cela va permettre de séparer les logs en fonction des jours et/ou d'une taille limite
+const rfs = require('rotating-file-stream');
+// Permet d'interagir avec le file system du serveur, permettant d'accéder au dossier des logs depuis node
+const path = require('path');
+
+// Obtention du chemin du dossier des logs
+const logDirectory = path.join(__dirname, 'logs');
+
+// Stream pour les logs d'accès
+const accessLogStream = rfs.createStream(
+    // Nom du fichier log
+    'access.log',
+    {
+        // Rotation quotidienne
+        interval: '1d',
+        // Rotation si +10 Mo (optionnel)
+        size: '10M',
+        // Au chemin spécifié
+        path: logDirectory
+    }
+);
+
+// Stream pour les logs d’erreurs (status >= 400)
+const errorLogStream = rfs.createStream('error.log', {
+    interval: '1d',
+    size: '10M',
+    path: logDirectory
+});
+
+// Morgan : logs dans la console
+app.use(morgan('dev'));
+
+// Morgan : logs accès → access.log
+// On précise à Morgan d'envoyer ses logs dans les fichiers, via le stream que l'on a défini
+app.use(morgan('combined', { stream: accessLogStream }));
+
+// Morgan : logs erreurs → error.log
+// Ici on ne stocke que les erreurs HTTP, on filtre donc sur le code de statut de la réponse de la page
+app.use(
+    morgan('combined', {
+        skip: (req, res) => res.statusCode < 400,
+        stream: errorLogStream
+    })
+);
+
+
 // ** Connexion à MongoDB **
+
 // C'est une connexion à un serveur, donc un processus qui peut prendre du temps -> la fonction est asynchrone
 async function connectDB() {
     try {
@@ -37,6 +91,7 @@ async function connectDB() {
     }
 }
 connectDB();
+
 
 // Montage du routeur sur notre application
 app.use('/', router);
