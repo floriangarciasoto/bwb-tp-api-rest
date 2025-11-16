@@ -25,9 +25,23 @@ async function createProduct(req, res) {
 // * Récupération de tous les produits *
 async function getAllProducts(req, res) {
     try {
-        // Si la recherche des entrées en base de données a fonctionné, on affiche la liste retournée
-        // par la méthode .find(), sans paramètre car l'on en cherche pas à filtrer, on a besoin de tout afficher.
-        res.json(await Product.find());
+        // Si la recherche des entrées en base de données a fonctionné
+
+        // On récupère le numéro de la page demandé par l'utilisateur, via les paramètres query de la requête,
+        // par défaut la première page si "&p=" n'est pas présent dans l'URL
+        const page = parseInt(req.query.p) || 1;
+        // On met une limite arbitraire à 10 éléments par page
+        const limit = 10;
+
+        // On détermine l'offset des produits, correspondants à ceux des pages d'avant
+        const offset = (page - 1) * limit;
+
+        // Puis on applique le filtrage lors de la recherche en base de données
+        // On applique des méthodes en chaine sur le Query object renvoyé par .find()
+        const products = await Product.find().skip(offset).limit(limit);
+
+        // Et on renvoit le résultat
+        res.json(products);
     } catch (error) {
         // Si la recherche a échouée
         console.error(error);
