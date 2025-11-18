@@ -9,14 +9,11 @@ const ROUTES = {
     PRODUCTS: '/products'
 };
 
+// Import du middleware d'authentification
+const auth = require('./../middlewares/auth');
+
 // Appel de notre contrôleur
-const {
-    createProduct,
-    getAllProducts,
-    getProductById,
-    updateProduct,
-    deleteProduct
-} = require('../controllers/product.controller');
+const productController = require('../controllers/product.controller');
 
 // ** Création de la logique de l'application **
 
@@ -39,31 +36,33 @@ const {
 // URL : /products
 // Méthode POST -> l'utilisateur va envoyer des données pour ajouter un produit
 // => C'est la méthode utilisée pour la création de données
-router.post(ROUTES.PRODUCTS, createProduct);
+// === Obligation d'être connecté, on ajout donc le middleware entre les deux ===
+router.post(ROUTES.PRODUCTS,auth,productController.createProduct);
 
 // * Affichage des produits *
 // URL : /products
 // Méthode GET -> l'utilisateur demande seulement la liste des produits
 // => C'est la méthode utilisée pour l'affichage de données
-router.get(ROUTES.PRODUCTS, getAllProducts);
+// === Pour afficher un produit, pas besoin d'être connecté ===
+router.get(ROUTES.PRODUCTS,productController.getAllProducts);
 
 // * Affichage d'un produit en particulier *
 // URL : /products/:id
 // Méthode GET : pareil que l'affichage de la liste des produits,
 // l'utilisateur ne demande que l'affichage d'informations, ici les détails d'un produit
-router.get(`${ROUTES.PRODUCTS}/:id`, getProductById);
+router.get(`${ROUTES.PRODUCTS}/:id`,productController.getProductById);
 
 // * Modification d'un produit en particulier *
 // URL : /products/:id
 // Méthode PUT : l'utilisateur va vouloir modifier les informations d'un produit en particulier
 // => C'est la méthode utilisée pour la modification de données précises
-router.put(`${ROUTES.PRODUCTS}/:id`, updateProduct);
+router.put(`${ROUTES.PRODUCTS}/:id`,auth,productController.updateProduct);
 
 // * Suppression d'un produit en particulier *
 // URL : /products/:id
 // Méthode DELETE : l'utilisateur va vouloir supprimer un produit en particulier
 // => C'est la méthode utilisée pour la suppression de données précises
-router.delete(`${ROUTES.PRODUCTS}/:id`, deleteProduct);
+router.delete(`${ROUTES.PRODUCTS}/:id`,auth,productController.deleteProduct);
 
 // On exporte notre router Express (variable router)
 module.exports = router;

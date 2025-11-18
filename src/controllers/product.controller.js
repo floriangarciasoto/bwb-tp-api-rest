@@ -4,8 +4,11 @@
 // Ajout du modèle d'un produit
 const Product = require('../models/products');
 
+// Création de notre contrôleur (objet contenant l'ensemble des fonctions)
+const controller = {};
+
 // * Création d'un produit *
-async function createProduct(req, res) {
+controller.createProduct = async (req, res) => {
     try {
         // Si l'ajout d'une entrée en base de données a fonctionné, on renvoit un statut de réussite (20X),
         // ici le statut 201 qui correspond à la réussite de création.
@@ -23,7 +26,7 @@ async function createProduct(req, res) {
 }
 
 // * Récupération de tous les produits *
-async function getAllProducts(req, res) {
+controller.getAllProducts = async (req, res) => {
     try {
         // Si la recherche des entrées en base de données a fonctionné
 
@@ -52,7 +55,7 @@ async function getAllProducts(req, res) {
 }
 
 // * Récupération d'un produit par ID *
-async function getProductById(req, res) {
+controller.getProductById = async (req, res) => {
     try {
         // On récupere l'ID qui se situe directement dans l'URL
         // Express permet de définir l'ID en tant que paramètre de la requête grâce à la structuration
@@ -83,7 +86,7 @@ async function getProductById(req, res) {
 }
 
 // * Mise à jour d'un produit *
-async function updateProduct(req, res) {
+controller.updateProduct = async (req, res) => {
     try {
         // On récupere l'ID de la même façon
         const id = req.params.id;
@@ -125,7 +128,7 @@ async function updateProduct(req, res) {
 }
 
 // * Suppression d'un produit *
-async function deleteProduct(req, res) {
+controller.deleteProduct = async (req, res) => {
     try {
         // On récupere l'ID de la même façon
         const id = req.params.id;
@@ -152,10 +155,4 @@ async function deleteProduct(req, res) {
 }
 
 // Exportation de toutes les fonctions
-module.exports = {
-    createProduct,
-    getAllProducts,
-    getProductById,
-    updateProduct,
-    deleteProduct
-};
+module.exports = controller;

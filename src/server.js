@@ -16,8 +16,6 @@ app.use(express.json());
 // Utilisation du CORS permettant d'autoriser les requêtes depuis d'autres domaines
 app.use(cors());
 
-// Ajout des routes
-const router = require('./routes/product.routes');
 // Ajout du port d'écoute à notre application depuis l'env
 const PORT = process.env.PORT;
 
@@ -93,8 +91,12 @@ async function connectDB() {
 connectDB();
 
 
-// Montage du routeur sur notre application
-app.use('/', router);
+// Montage des routeurs sur notre application
+const productRouter = require('./routes/product.routes');
+const userRouter = require('./routes/user.routes');
+app.use('/', productRouter);
+app.use('/', userRouter);
+
 // Ouverture du port d'écoute de notre application
 app.listen(PORT, () => {
     console.log(`Serveur lancé sur http://localhost:${PORT}`);
