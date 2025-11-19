@@ -6,7 +6,8 @@ const router = express.Router();
 
 // Déclaration de nos routes (une seule dans le cas présent puisque l'application marche sur une seule URL)
 const ROUTES = {
-    PRODUCTS: '/products'
+    PRODUCTS: '/products',
+    PRODUCTS_ADD: '/product/add'
 };
 
 // Import du middleware d'authentification
@@ -38,6 +39,8 @@ const productController = require('../controllers/product.controller');
 // => C'est la méthode utilisée pour la création de données
 // === Obligation d'être connecté, on ajout donc le middleware entre les deux ===
 router.post(ROUTES.PRODUCTS,auth,productController.createProduct);
+// Ajout d'un produit via formulaire
+router.get(ROUTES.PRODUCTS_ADD,auth,productController.showProductForm);
 
 // * Affichage des produits *
 // URL : /products

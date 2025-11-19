@@ -4,11 +4,12 @@
 // Ajout du modèle d'un produit
 const Product = require('../models/products');
 
-// Création de notre contrôleur (objet contenant l'ensemble des fonctions)
-const controller = {};
+// Ajout des vues produits
+const productListView = require('../view/product/productListView');
+const createProductView = require('../view/product/createProductView');
 
 // * Création d'un produit *
-controller.createProduct = async (req, res) => {
+exports.createProduct = async (req, res) => {
     try {
         // Si l'ajout d'une entrée en base de données a fonctionné, on renvoit un statut de réussite (20X),
         // ici le statut 201 qui correspond à la réussite de création.
@@ -25,14 +26,24 @@ controller.createProduct = async (req, res) => {
     }
 }
 
+exports.showProductForm = (req, res) => {
+    try {
+        res.send(createProductView(req));
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 // * Récupération de tous les produits *
-controller.getAllProducts = async (req, res) => {
+exports.getAllProducts = async (req, res) => {
     try {
         // Si la recherche des entrées en base de données a fonctionné
 
         // On récupère le numéro de la page demandé par l'utilisateur, via les paramètres query de la requête,
         // par défaut la première page si "&p=" n'est pas présent dans l'URL
         const page = parseInt(req.query.p) || 1;
+        // On évite les pages négatives (ça n'existe pas :) )
+        if (page < 1) page = 1;
         // On met une limite arbitraire à 10 éléments par page
         const limit = 10;
 
@@ -44,7 +55,10 @@ controller.getAllProducts = async (req, res) => {
         const products = await Product.find().skip(offset).limit(limit);
 
         // Et on renvoit le résultat
-        res.json(products);
+        // res.json(products);
+
+        // Renvoit de la liste des produits en HTML via la vue correspondante
+        res.send(productListView(req,products,page));
     } catch (error) {
         // Si la recherche a échouée
         console.error(error);
@@ -55,7 +69,7 @@ controller.getAllProducts = async (req, res) => {
 }
 
 // * Récupération d'un produit par ID *
-controller.getProductById = async (req, res) => {
+exports.getProductById = async (req, res) => {
     try {
         // On récupere l'ID qui se situe directement dans l'URL
         // Express permet de définir l'ID en tant que paramètre de la requête grâce à la structuration
@@ -86,7 +100,7 @@ controller.getProductById = async (req, res) => {
 }
 
 // * Mise à jour d'un produit *
-controller.updateProduct = async (req, res) => {
+exports.updateProduct = async (req, res) => {
     try {
         // On récupere l'ID de la même façon
         const id = req.params.id;
@@ -128,7 +142,7 @@ controller.updateProduct = async (req, res) => {
 }
 
 // * Suppression d'un produit *
-controller.deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
     try {
         // On récupere l'ID de la même façon
         const id = req.params.id;
@@ -153,6 +167,3 @@ controller.deleteProduct = async (req, res) => {
         res.status(400).json({ error: "ID invalide" });
     }
 }
-
-// Exportation de toutes les fonctions
-module.exports = controller;

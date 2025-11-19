@@ -16,6 +16,11 @@ app.use(express.json());
 // Utilisation du CORS permettant d'autoriser les requêtes depuis d'autres domaines
 app.use(cors());
 
+// Mise en place de la convertion du corps brut de la requête en objet JavaScript lisible,
+// permettant de récuperer le JSON envoyé par le navigateur de l'utilisateur
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
+
 // Ajout du port d'écoute à notre application depuis l'env
 const PORT = process.env.PORT;
 
