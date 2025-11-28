@@ -1,38 +1,31 @@
+// Ajout de mongoose pour la création du modèle d'un utilisateur
 const mongoose = require('mongoose');
 
+// Création de la structure d'un user dans MongoDB
+// Version très simplifiée avec seulement un identifiant (le mail) et un mot de passe
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 2,
-        maxlength: 50
-    },
-
-    surname: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 2,
-        maxlength: 50
-    },
-
+    // Ajout de l'email, obligatoire, pas plus de 100 caractères, mais aussi et surtout UNIQUE.
+    // L'email doit pouvoir distinguer clairement un utilisateur d'un autre.
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
-        minlength: 2,
-        maxlength: 50
+        minlength: 3,
+        maxlength: 100
     },
 
-    password: {
+    // Résultat du mot de passe hashé de l'utilisateur lors de son inscription.
+    // En utilisant BCRYPT, on sait exactement la taille que prend le hash d'un mot de passe,
+    // on fixe alors la taille exactement à cette limite.
+    hash: {
         type: String,
         required: true,
-        trim: true,
-        minlength: 2,
-        maxlength: 200
+        minlength: 60,
+        maxlength: 60
     },
 
+    // On ajoute aussi la date de création du compte d'un user, de la même façon qu'un produit
     createdAt: {
         type: Date,
         default: Date.now,
@@ -41,4 +34,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+// On exporte notre modèle User pour qu'il puisse être utilisé par nos contrôleurs.
+// Mongoose sera qu'il faut s'adresser à la collection "users" dans la BDD MongoDB.
 module.exports = mongoose.model('User', userSchema);
