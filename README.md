@@ -4,6 +4,12 @@ Réaliser une API REST permettant de gérer des produits en utilisant Node.js, E
 
 L’objectif est de comprendre les bases d’une architecture backend moderne : modèle, contrôleur, routes et serveur.
 
+Fonctionnalités :
+
+- Création, affichage, mise à jour et suppression de produits (CRUD)
+- Gestion d'inscription et de conenxion d'utilisateur avec token JWT
+- Gestion d'un panier utilisateur
+
 ## Installation du serveur
 
 ### Packages npm
