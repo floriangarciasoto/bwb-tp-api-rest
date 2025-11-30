@@ -8,6 +8,26 @@ const Product = require('../models/products');
 const productListView = require('../view/product/productListView');
 const createProductView = require('../view/product/createProductView');
 
+/**
+ * Renvoie une liste paginée de produits depuis la base de données.
+ *
+ * @param {number} page - numéro de la page (>= 1)
+ * @returns {Promise<Product[]>} - tableau de documents Product correspondant à la page demandée
+ */
+async function getAllProductsFromDB(page) {
+    // On évite les pages négatives (ça n'existe pas :) )
+    if (page < 1) page = 1;
+    // On met une limite arbitraire à 10 éléments par page
+    const limit = 10;
+
+    // On détermine l'offset des produits, correspondants à ceux des pages d'avant
+    const offset = (page - 1) * limit;
+
+    // Puis on applique le filtrage lors de la recherche en base de données
+    // On applique des méthodes en chaine sur le Query object renvoyé par .find()
+    return await Product.find().skip(offset).limit(limit);
+}
+
 // * Création d'un produit *
 exports.createProduct = async (req, res) => {
     try {
@@ -26,38 +46,51 @@ exports.createProduct = async (req, res) => {
     }
 }
 
+// * Ajout d'un produit via formulaire HTML *
 exports.showProductForm = (req, res) => {
     try {
+        // On renvoi à l'utilisateur la vue correspondante à l'affichage
+        // d'un formulaire HTML permettant d'ajouter un produit
         res.send(createProductView(req));
     } catch (error) {
+        // Si l'affichage de la vue a produit une erreur
         console.error(error);
+        // on renvoi à l'utilisateur l'erreur correspondante
+        res.status(500).json({ error: error });
     }
 }
 
-// * Récupération de tous les produits *
+// * Récupération de tous les produits - Affichage JSON *
 exports.getAllProducts = async (req, res) => {
     try {
-        // Si la recherche des entrées en base de données a fonctionné
-
         // On récupère le numéro de la page demandé par l'utilisateur, via les paramètres query de la requête,
         // par défaut la première page si "&p=" n'est pas présent dans l'URL
         const page = parseInt(req.query.p) || 1;
-        // On évite les pages négatives (ça n'existe pas :) )
-        if (page < 1) page = 1;
-        // On met une limite arbitraire à 10 éléments par page
-        const limit = 10;
 
-        // On détermine l'offset des produits, correspondants à ceux des pages d'avant
-        const offset = (page - 1) * limit;
+        // Puis on récupère les produits avec la fonction correspondante
+        const products = await getAllProductsFromDB(page);
 
-        // Puis on applique le filtrage lors de la recherche en base de données
-        // On applique des méthodes en chaine sur le Query object renvoyé par .find()
-        const products = await Product.find().skip(offset).limit(limit);
+        // Et on renvoit le résultat à l'utilisateur
+        res.json(products);
+    } catch (error) {
+        // Si la recherche a échouée
+        console.error(error);
+        // C'est qu'il y a une erreur en base de données, la collection n'existe peut être pas
+        // mais c'est une erreur très peu probable.
+        res.status(500).json({ error: "Erreur lors de l'affichage des produits" });
+    }
+}
 
-        // Et on renvoit le résultat
-        // res.json(products);
+// * Récupération de tous les produits - Affichage HTML *
+exports.getAllProductsView = async (req, res) => {
+    try {
+        // On récupère le numéro de la page de la même façon
+        const page = parseInt(req.query.p) || 1;
 
-        // Renvoit de la liste des produits en HTML via la vue correspondante
+        // Pareil pour la récupération des produits correspondant à la page demandée
+        const products = await getAllProductsFromDB(page);
+
+        // Sauf que cette fois-ci on renvoi la liste des produits en HTML via la vue correspondante
         res.send(productListView(req,products,page));
     } catch (error) {
         // Si la recherche a échouée

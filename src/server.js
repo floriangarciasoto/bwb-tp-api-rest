@@ -99,8 +99,10 @@ connectDB();
 // Montage des routeurs sur notre application
 const productRouter = require('./routes/product.routes');
 const authRouter = require('./routes/auth.routes');
+const cartRouter = require('./routes/cart.routes');
 app.use('/', productRouter);
 app.use('/', authRouter);
+app.use('/', cartRouter);
 
 // Ouverture du port d'écoute de notre application
 app.listen(PORT, () => {

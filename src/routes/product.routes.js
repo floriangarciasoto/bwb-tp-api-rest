@@ -7,6 +7,7 @@ const router = express.Router();
 // Déclaration de nos routes (une seule dans le cas présent puisque l'application marche sur une seule URL)
 const ROUTES = {
     PRODUCTS: '/products',
+    PRODUCTS_VIEW: '/products/view',
     PRODUCTS_ADD: '/product/add'
 };
 
@@ -48,6 +49,8 @@ router.get(ROUTES.PRODUCTS_ADD,auth,productController.showProductForm);
 // => C'est la méthode utilisée pour l'affichage de données
 // === Pour afficher un produit, pas besoin d'être connecté ===
 router.get(ROUTES.PRODUCTS,productController.getAllProducts);
+// Affichage des produits en HTML
+router.get(ROUTES.PRODUCTS_VIEW,productController.getAllProductsView);
 
 // * Affichage d'un produit en particulier *
 // URL : /products/:id

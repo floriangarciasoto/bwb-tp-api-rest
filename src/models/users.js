@@ -25,6 +25,33 @@ const userSchema = new mongoose.Schema({
         maxlength: 60
     },
 
+    // Panier d'achat de l'utilisateur représenté par un array d'objets Product
+    cart: [
+        {
+            // ID du produit correspondant exactement à l'ID d'un produit dans la collection products
+            productId: {
+                // On prend exactement le même type en se référant au type de l'ID d'un produit,
+                // en allant le chercher dans la collection en question,
+                // vu que l'on se réfere à une propriété ID d'une entrée de MongoDB que l'on a pas défini nous même.
+                type: mongoose.Schema.Types.ObjectId,
+                
+                // On donne comme référence le modèle en question qui lie notre code à notre base de donneés
+                ref: "Product"
+            },
+
+            // Quantité d'un produit : par défaut à 1 puis incrémentée si ajout d'un produit avec le même ID
+            quantity: {
+                type: Number,
+                default: 1,
+                min: 1,
+                validate: {
+                    validator: Number.isInteger,
+                    message: "La quantité doit être un entier"
+                }
+            }
+        }
+    ],
+
     // On ajoute aussi la date de création du compte d'un user, de la même façon qu'un produit
     createdAt: {
         type: Date,
